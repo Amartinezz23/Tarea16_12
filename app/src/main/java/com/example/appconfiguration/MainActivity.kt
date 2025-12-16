@@ -26,35 +26,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inflar el layout usando ViewBinding
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configurar la barra de herramientas
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Necesitamos el controlador de Navegación
-        // Primero accedemos al FragmentContentView y casteamos
-        // supportFragmentManager conoce a todos los fragmentos y permite transacciones en t. ejecución
+
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
 
         // Todo NavHostFragment tiene asociado un NavController
         navController = navHostFragment.navController
 
-        // Configuramos los destinos de navegación
-        // Solo homeFragment será top-level (sin botón de retroceso)
+
         appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
 
-        /*
-        Necesitamos integración entre la barra de acción y el controlador de navegación
-        Aplicamos la configuración del appBarConfiguration y mostramos el botón de navegación.
-        Automáticamente, cambiará el título y el botón de navegación de la Toolbar
-        */
+
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Configurar el FAB (FloatingActionButton)
+
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Agregar nuevo streamer", Snackbar.LENGTH_LONG)
                 .setAction("OK", null)
@@ -62,16 +55,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Método que es llamado después de crear la vista del activity (Menú de opciones superior)
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflar el menú de opciones; esto agrega elementos a la barra de acción si está presente
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
-    /*
-    Para controlar los eventos de los items del toolbar
-    */
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.toolbar_home -> {
@@ -86,10 +77,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*
-    Le dice al NavController que navegue hacia atrás en su pila de navegación,
-    siempre que no esté en el destino inicial
-    */
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
